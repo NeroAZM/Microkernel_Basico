@@ -12,21 +12,6 @@ static int round_robin()
     return (current + 1) % task_count;
 }
 
-/*
-int priority_sched()
-{
-    int best = 0;
-
-    for (int i = 1; i < task_count; i++)
-        if (tasks[i].priority > tasks[best].priority)
-            best = i;
-
-    return best;
-}
-
-
-*/
-
 /* ---------- Algoritmo atual ---------- */
 
 static sched_algo_t current_algo = round_robin;
