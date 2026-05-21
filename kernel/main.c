@@ -4,7 +4,7 @@
 
 extern void uart_print(const char*);
 
-/* ===== Tasks ===== */
+/*   Tasks   */
 
 void task1()
 {
@@ -42,7 +42,7 @@ void task2()
     }
 }
 
-/* ===== Kernel ===== */
+/*   Kernel   */
 
 void kernel_main()
 {

@@ -5,14 +5,14 @@ extern void context_switch(void*, void*);
 
 static int current = 0;
 
-/* ---------- Round-Robin padrão ---------- */
+/*   Round-Robin padrão   */
 
 static int round_robin()
 {
     return (current + 1) % task_count;
 }
 
-/* ---------- Algoritmo atual ---------- */
+/*   Algoritmo atual   */
 
 static sched_algo_t current_algo = round_robin;
 
@@ -22,7 +22,7 @@ void scheduler_set_algorithm(sched_algo_t algo)
         current_algo = algo;
 }
 
-/* ---------- Yield ---------- */
+/*   Yield   */
 
 void yield()
 {
@@ -34,8 +34,8 @@ void yield()
     context_switch(tasks[prev].regs,
                    tasks[next].regs);
 }
-
-/* ---------- Início ---------- */
+ 
+/*   Início   */
 
 void scheduler_start()
 {
