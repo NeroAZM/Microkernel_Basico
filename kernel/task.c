@@ -26,6 +26,10 @@ void xTaskCreate(void (*task)(void),
     t->regs[0] = (uint64_t)task;   // ra
     t->regs[1] = (uint64_t)sp;     // sp
 
+    /* Captura o valor do gp atual e salva na task */
+    register uint64_t gp asm("gp");
+    t->regs[2] = gp;
+
     t->entry = task;
     t->priority = priority;
 
