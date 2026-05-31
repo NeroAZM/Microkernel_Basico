@@ -24,3 +24,14 @@ all:
 	$(CROSS)gcc $(CFLAGS) -c kernel/memory.c
 
 	$(CROSS)ld -T linker.ld $(OBJS) -o kernel.elf
+
+clean:
+	rm -f *.o kernel.elf
+
+run: all
+	qemu-system-riscv64 \
+	-machine virt \
+	-m 128M \
+	-nographic \
+	-bios default \
+	-kernel kernel.elf
