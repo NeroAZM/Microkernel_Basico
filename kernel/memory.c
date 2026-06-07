@@ -65,15 +65,39 @@ void *kmalloc(uint64_t size)
     return 0;   // sem memória
 }
 
-/*   Free (precisa ser feito ainda)   */
+/*   Free com Coalescência   */
 
 void kfree(void *ptr)
 {
-    /* ainda precisa mexer nessa parte*/
-    if (!ptr) return;
+    if (!ptr)
+        return;
     
+    /* Recuperar cabeçalho do bloco */
     block_t *block = (block_t*)((uint8_t*)ptr - sizeof(block_t));
     block->free = 1;
+    
+    /* Coalescência: unir com bloco próximo se estiver livre */
+    if (block->next && block->next->free)
+    {
+        block->size += sizeof(block_t) + block->next->size;
+        block->next = block->next->next;
+    }
+    
+    /* Coalescência: unir com bloco anterior se estiver livre */
+    if (block != free_list)
+    {
+        block_t *current = free_list;
+        while (current && current->next != block)
+        {
+            current = current->next;
+        }
+        
+        if (current && current->free)
+        {
+            current->size += sizeof(block_t) + block->size;
+            current->next = block->next;
+        }
+    }
 }
 
 /*   Estatísticas   */
@@ -113,4 +137,28 @@ uint64_t memory_free(void)
         current = current->next;
     }
     return free_mem;
+}
+
+/*   Fragmentação do Heap   */
+
+uint64_t memory_fragmentation(void)
+{
+    uint64_t total_free = memory_free();
+    uint64_t largest_free = 0;
+    
+    block_t *current = free_list;
+    while (current)
+    {
+        if (current->free && current->size > largest_free)
+        {
+            largest_free = current->size;
+        }
+        current = current->next;
+    }
+    
+    if (total_free == 0)
+        return 0;
+    
+    /* Fragmentação = (total free - maior bloco free) / total free * 100 */
+    return ((total_free - largest_free) * 100) / total_free;
 }
