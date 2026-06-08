@@ -35,3 +35,22 @@ void xTaskCreate(void (*task)(void),
 
     task_count++;
 }
+
+void xTaskDelete(int index)
+{
+    if (index < 0 || index >= task_count)
+        return;
+
+    TCB *t = &tasks[index];
+
+    if (t->stack)
+    {
+        kfree(t->stack);
+        t->stack = 0;
+    }
+
+    for (int i = index; i < task_count - 1; i++)
+        tasks[i] = tasks[i + 1];
+
+    task_count--;
+}

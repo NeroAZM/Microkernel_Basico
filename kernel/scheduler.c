@@ -26,6 +26,9 @@ void scheduler_set_algorithm(sched_algo_t algo)
 
 void yield()
 {
+    if (task_count <= 1)
+        return;
+
     int prev = current;
     int next = current_algo();
 
