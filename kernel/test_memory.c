@@ -142,20 +142,20 @@ uint64_t memory_fragmentation(void)
 
 int main()
 {
-    printf("\n╔═══════════════════════════════════════════╗\n");
-    printf("║  Teste do Alocador Free List com        ║\n");
-    printf("║  Coalescência                           ║\n");
-    printf("╚═══════════════════════════════════════════╝\n\n");
+    printf("\n\n");
+    printf("  Teste do Alocador Free List com        \n");
+    printf("  Coalescencia                           \n");
+    printf("\n\n");
     
     memory_init();
     
-    printf("✓ TESTE 1: Estado Inicial\n");
-    printf("  Memory total:       %lu bytes\n", memory_total());
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("Ok TESTE 1: Estado Inicial\n");
+    printf("  Memoria total:       %lu bytes\n", memory_total());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 2: Alocando 3 blocos de 256 bytes\n");
+    printf("Ok TESTE 2: Alocando 3 blocos de 256 bytes\n");
     void *ptr1 = kmalloc(256);
     void *ptr2 = kmalloc(256);
     void *ptr3 = kmalloc(256);
@@ -163,59 +163,59 @@ int main()
     printf("  ptr1 = %p\n", ptr1);
     printf("  ptr2 = %p\n", ptr2);
     printf("  ptr3 = %p\n", ptr3);
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 3: Liberando bloco do meio (coalescência com próximo)\n");
+    printf("Ok TESTE 3: Liberando bloco do meio (coalescencia com proximo)\n");
     kfree(ptr2);
     
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 4: Alocando novo bloco (reutilização First Fit)\n");
+    printf("Ok TESTE 4: Alocando novo bloco (reutilizacao First Fit)\n");
     void *ptr4 = kmalloc(128);
     printf("  ptr4 = %p (reutilizou espaço de ptr2)\n", ptr4);
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 5: Liberando ptr1 (coalescência com anterior)\n");
+    printf("Ok TESTE 5: Liberando ptr1 (coalescencia com anterior)\n");
     kfree(ptr1);
     
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 6: Liberando ptr3 (coalescência com anterior)\n");
+    printf("Ok TESTE 6: Liberando ptr3 (coalescencia com anterior)\n");
     kfree(ptr3);
     
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 7: Liberando ptr4 (coalescência completa)\n");
+    printf("Ok TESTE 7: Liberando ptr4 (coalescencia completa)\n");
     kfree(ptr4);
     
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
-    printf("  Memory fragmentation: %lu%%\n\n", memory_fragmentation());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
+    printf("  Fragmentacao da memoria: %lu%%\n\n", memory_fragmentation());
     
-    printf("✓ TESTE 8: Teste de Alinhamento\n");
+    printf("Ok TESTE 8: Teste de Alinhamento\n");
     void *a = kmalloc(255);  // deve virar 256
     void *b = kmalloc(1);    // deve virar 8
     printf("  Alocado 255 bytes (alinhado para 256)\n");
     printf("  Alocado 1 byte (alinhado para 8)\n");
-    printf("  Memory used:        %lu bytes\n", memory_used());
-    printf("  Memory free:        %lu bytes\n", memory_free());
+    printf("  Memoria usada:        %lu bytes\n", memory_used());
+    printf("  Memoria livre:        %lu bytes\n", memory_free());
     
     kfree(a);
     kfree(b);
     
-    printf("\n╔═══════════════════════════════════════════╗\n");
-    printf("║  ✓ TODOS OS TESTES PASSARAM COM SUCESSO ║\n");
-    printf("╚═══════════════════════════════════════════╝\n\n");
+    printf("\n\n");
+    printf("  TODOS OS TESTES PASSARAM COM SUCESSO \n");
+    printf("\n\n");
     
     return 0;
 }
