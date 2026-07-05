@@ -8,12 +8,13 @@ CFLAGS = -march=rv64gc -mabi=lp64 \
          -fno-stack-protector \
          -Wall -Iinclude
 
-OBJS = start.o context.o \
+OBJS = start.o trap_entry.o context.o \
        main.o task.o scheduler.o uart.o string.o memory.o \
        block.o inode.o treefs.o
 
 all:
 	$(CROSS)gcc $(CFLAGS) -c boot/start.S
+	$(CROSS)gcc $(CFLAGS) -c boot/trap_entry.S
 	$(CROSS)gcc $(CFLAGS) -c kernel/context.S
 
 	$(CROSS)gcc $(CFLAGS) -c kernel/main.c
