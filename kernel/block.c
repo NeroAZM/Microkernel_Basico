@@ -12,6 +12,10 @@ void block_init(void)
         memset(virtual_disk, 0, TOTAL_BLOCKS * BLOCK_SIZE);
     }
     memset(block_bitmap, 0, sizeof(block_bitmap));
+    
+    // Reserva o bloco 0 e inode 0 (na logica, 0 eh usado como nulo/vazio)
+    // Para o bloco, 0 significa ponteiro vazio nas structs de Inodes.
+    block_bitmap[0] |= 1;
 }
 
 int block_alloc(void)
