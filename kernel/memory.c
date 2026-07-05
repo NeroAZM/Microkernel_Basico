@@ -1,4 +1,6 @@
-#include "memory.h"
+#include "../include/memory.h"
+#include <stdint.h>
+
 
 /*   Configuração do heap   */
 
@@ -10,8 +12,8 @@ typedef struct block
     uint64_t size;
     int free;
     struct block *next;
-} block_t;
-
+} __attribute__((aligned(16))) block_t;
+/*inteiro sem sinal de 8 bits*/
 static uint8_t *heap_base = (uint8_t*)HEAP_START;
 static block_t *free_list = 0;
 
@@ -32,8 +34,8 @@ void *kmalloc(uint64_t size)
     if (size == 0)
         return 0;
 
-    /* Alinhamento para 8 bytes */
-    size = (size + 7) & ~7ULL;
+    /* Alinhamento para 16 bytes (necessário para a pilha no RISC-V) */
+    size = (size + 15) & ~15ULL;
 
     block_t *current = free_list;
     while (current)
@@ -42,7 +44,7 @@ void *kmalloc(uint64_t size)
         if (current->free && current->size >= size)
         {
             /* se sobrar espaço suficiente para outro bloco (cabeçalho + min de dados), divide */
-            if (current->size >= size + sizeof(block_t) + 8)
+            if (current->size >= size + sizeof(block_t) + 16)
             {
                 block_t *new_block = (block_t*)((uint8_t*)current + sizeof(block_t) + size);
                 new_block->size = current->size - size - sizeof(block_t);
