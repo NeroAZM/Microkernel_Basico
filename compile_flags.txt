@@ -1,8 +1,0 @@
--Iinclude
--ffreestanding
--nostdlib
---target=riscv64-unknown-elf
--march=rv64gc
--mabi=lp64
--mcmodel=medany
--Wall
