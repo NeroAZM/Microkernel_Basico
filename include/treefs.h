@@ -28,8 +28,5 @@ int mkdir(const char *path);
 int create(const char *path);
 int unlink(const char *path);
 int ls(const char *path);
-
-/* A interface do professor sugere o uso de um "int fd" (file descriptor). 
-   Para simplificar neste trabalho, mapearemos esse 'fd' diretamente para o inode_id do arquivo aberto. */
 int read(int fd, void *buf, uint32_t size);
 int write(int fd, const void *buf, uint32_t size);
